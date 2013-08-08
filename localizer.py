@@ -38,9 +38,9 @@ win = visual.Window(monitor=mon,units='deg',
 fixation = visual.PatchStim(win, tex=None, mask = 'circle',color=1*rgb,
                                 size=p.fixation_size)
 
-fixation_surround = visual.PatchStim(win, tex=None, mask='circle',
-                                         color=-1*rgb,
-                                         size=p.fixation_size*1.5)
+#fixation_surround = visual.PatchStim(win, tex=None, mask='circle',
+                                         #color=-1*rgb,
+                                         #size=p.fixation_size*1.5)
                                          
 central_grey = visual.PatchStim(win, tex=None, mask='circle', 
                                                     color=0*rgb, 
@@ -80,9 +80,9 @@ for h in horizontal: h.setSF = p.sf
 
 message = """ PRESS THE KEY \n WHEN YOU SEE THE RED DOT! """
 #Initialize and call in one:
-Text(win,text=message,height=0.5)() 
+Text(win, text=message, height=1.5)() 
 
-fixation_surround.draw()
+#fixation_surround.draw()
 fixation.draw()
 win.flip()
 #Wait 1 sec, to avoid running off:
@@ -128,7 +128,7 @@ for block in xrange(p.n_blocks):
         else:
             this = horizontal
             
-        if t>1 and np.mod(int(t),2)==0:
+        if t>2 and np.mod(int(t),2)==0:
             if switcheroo:
                 r_phase_sign = np.sign(np.random.randn(1))
                 a_phase_sign = np.sign(np.random.randn(1))
@@ -146,12 +146,12 @@ for block in xrange(p.n_blocks):
 
         for thisone in this:
             thisone.setRadialPhase(thisone.radialPhase +
-                             r_phase_sign*t_diff*two_pi/p.temporal_freq)
+                             r_phase_sign*t_diff*two_pi/p.temporal_freq/2)
             
             if block_clock.getTime()>=p.block_duration:
                 break
             thisone.setAngularPhase(thisone.angularPhase  +
-                               a_phase_sign*t_diff*two_pi/p.temporal_freq)
+                               a_phase_sign*t_diff*two_pi/p.temporal_freq/2)
             
             thisone.draw()
             
@@ -163,7 +163,7 @@ for block in xrange(p.n_blocks):
         #Keep checking for time:
         if block_clock.getTime()>=p.block_duration:
             break
-        fixation_surround.draw()
+        #fixation_surround.draw()
 
         #Keep checking for time:
         if block_clock.getTime()>=p.block_duration:
@@ -185,7 +185,7 @@ for block in xrange(p.n_blocks):
                 win.close()
                 f.close()
                 core.quit()
-            if key in ['1','2','3','4','5']:
+            else:
                     key_press.append(t + (block * p.block_duration))
                     f = save_data(f, t + (block * p.block_duration), 'key pressed')
 
